@@ -43,6 +43,7 @@ splash_scene = scene:extend({
   end,
 
   load_next_scene = function(_ENV)
+    loading = true
     transition(function()
       transition.transition_table = custom_transition_table or transition.default_transition_table
       scene:load(title_scene)

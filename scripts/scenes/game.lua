@@ -31,12 +31,13 @@ game_scene = scene:extend({
       if not aabb(b, screen) then
         b:destroy()
         lives -= 1
+        screen:shake(2, 3)
         sfx(4)
       end
     end
 
     -- load level when lives run out
-    if lives <= 0 then
+    if lives <= 0 or #brick.objects == 0 then
       _ENV:init()
     end
   end,
@@ -47,6 +48,12 @@ game_scene = scene:extend({
     for e in all(entity.objects) do
       e:draw()
     end
+
+    if #ball.objects == 0 then
+      printc("❎ to start", 46, 7)
+    end
+
+    ? "♥X" .. lives, 1, 57, 1
   end,
 
   load_level = function(_ENV, id)
