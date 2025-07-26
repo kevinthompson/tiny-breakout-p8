@@ -6,7 +6,7 @@ paddle = rectangle:extend({
   width = 16,
   height = 3,
 
-  solid = true,
+  semi_solid = true,
 
   before_update = function(_ENV)
     vx *= 0.9

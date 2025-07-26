@@ -175,17 +175,19 @@ entity = game_object:extend({
         for e in all(entity.objects) do
           if e != _ENV and _ENV:collides_with_object(e) then
             if x1 < e.x + e.width and x2 > e.x and y1 < e.y + e.height and y2 > e.y then
-              _ENV:on_collide(e, axis)
-
-              if e.solid
-              or (
-                e.semi_solid
-                and axis == "y"
-                and vy > 0
-                and y + height - 1 < e.y
-              ) then
-                collision_object = e
-                break
+              if e.solid or e.semi_solid then
+                if e.solid
+                or (
+                  axis == "y"
+                  and vy > 0
+                  and y + height - 1 < e.y
+                ) then
+                  collision_object = e
+                  _ENV:on_collide(e, axis)
+                  break
+                end
+              else
+                _ENV:on_collide(e, axis)
               end
             end
           end

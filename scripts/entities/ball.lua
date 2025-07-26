@@ -23,7 +23,19 @@ ball = entity:extend({
       other:hit()
     end
 
-    if (axis == "y") vy *= -1
-    if (axis == "x") vx *= -1
+    if other:is(paddle) then
+      -- use angle to paddle
+      local px = other.x + paddle.width / 2
+      local py = other.y + paddle.height / 2
+      local bx = x + width / 2
+      local by = y + height / 2
+      local a = atan2(bx - px, by - py)
+      vx = cos(a) * speed
+      vy = sin(a) * speed
+    else
+      -- reflect angle
+      if (axis == "y") vy *= -1
+      if (axis == "x") vx *= -1
+    end
   end
 })
