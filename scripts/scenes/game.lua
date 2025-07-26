@@ -1,7 +1,8 @@
 game_scene = scene:extend({
   init = function(_ENV)
     entity:destroy_all()
-    _ENV:load_level(global.level)
+    _ENV:load_level(rnd(levels))
+    lives = 3
 
     -- reset ball speed
     ball.speed = ball.min_speed
@@ -25,9 +26,17 @@ game_scene = scene:extend({
       })
     end
 
-    -- debug: switch level
-    if btnp(4) then
-      global.level += 1
+    for b in all(ball.objects) do
+      -- destroy ball off screen
+      if not aabb(b, screen) then
+        b:destroy()
+        lives -= 1
+        sfx(4)
+      end
+    end
+
+    -- load level when lives run out
+    if lives <= 0 then
       _ENV:init()
     end
   end,
@@ -60,7 +69,7 @@ game_scene = scene:extend({
     end
 
     -- create player
-    global.player = paddle()
+    player = paddle()
 
     -- create walls
     wall({ x = -1, y = 0, width = 1, height = 64 })
@@ -72,7 +81,7 @@ game_scene = scene:extend({
       y = -1,
       width = 64,
       height = 1,
-      on_hit = function(_ENV)
+      on_hit = function()
         -- reduce paddle size when hitting ceiling
         local paddle_size = max(player.width - 2, 8)
 
@@ -80,7 +89,6 @@ game_scene = scene:extend({
           player.width = paddle_size
           player.x += 1
           sfx(3)
-          screen:shake()
         end
       end
     })

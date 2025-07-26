@@ -35,6 +35,26 @@ entity.gravity_scale = 0
 -- initialize cartridge
 function _init()
 	scene:load(splash_scene)
+
+  -- find levels from first sprite page
+  levels = {}
+  for id = 1, 63 do
+    local level
+    local sx = (id % 16) * 8
+    local sy = (id \ 16) * 8
+
+    for x = sx, sx + 7 do
+      for y = sy, sy + 7 do
+        local pixel_color = sget(x, y)
+        if pixel_color != 0 then
+          add(levels, id)
+          break
+        end
+      end
+
+      if (level) break
+    end
+  end
 end
 
 -- update current scene

@@ -3,7 +3,7 @@ rectangle = entity:extend({
   height = 4,
 
   primary_color = 7,
-  color_map = split("0,0,0,0,0,0,6,0,0,9,3,13,0,8,0,0"),
+  color_map = split("5,1,1,1,0,1,6,2,4,9,3,13,1,8,14,0"),
 
   after_init = function(_ENV)
     secondary_color = color_map[primary_color]
