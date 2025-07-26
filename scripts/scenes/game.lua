@@ -2,20 +2,7 @@ game_scene = scene:extend({
   init = function(_ENV)
     pal(split("1,2,139,4,129,6,7,136,9,135,138,12,140,14,15,0"), 1)
     entity:destroy_all()
-
     _ENV:load_level(global.level)
-
-    brick.after_destroy = function(_ENV)
-      for obj in all(ball.objects) do
-        obj.speed += (ball.max_speed - ball.speed ) / #brick.objects
-      end
-    end
-
-    player = paddle()
-
-    wall({ x = -1, y = 0, width = 1, height = 64 })
-    wall({ x = 64, y = 0, width = 1, height = 64 })
-    wall({ x = 0, y = -1, width = 64, height = 1 })
   end,
 
   update = function(_ENV)
@@ -43,6 +30,10 @@ game_scene = scene:extend({
   end,
 
   load_level = function(_ENV, id)
+    -- reset ball speed
+    ball.speed = ball.min_speed
+
+    -- create bricks from sprite
     local sx = (id % 16) * 8
     local sy = (id \ 16) * 8
 
@@ -59,5 +50,20 @@ game_scene = scene:extend({
         end
       end
     end
+
+    -- change ball speed after brick destroy
+    local max_bricks = #brick.objects
+    brick.after_destroy = function(_ENV)
+      local percent = (max_bricks - #brick.objects) / max_bricks
+      ball.speed = ball.min_speed + (ball.max_speed - ball.min_speed) * percent
+    end
+
+    -- create player
+    player = paddle()
+
+    -- create level bounds
+    wall({ x = -1, y = 0, width = 1, height = 64 })
+    wall({ x = 64, y = 0, width = 1, height = 64 })
+    wall({ x = 0, y = -1, width = 64, height = 1 })
   end
 })

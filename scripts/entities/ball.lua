@@ -2,6 +2,7 @@ ball = rectangle:extend({
   width = 2,
   height = 2,
   speed = 0.25,
+  min_speed = 0.25,
   max_speed = 1,
 
   collides_with = {
@@ -16,7 +17,6 @@ ball = rectangle:extend({
   end,
 
   before_update = function(_ENV)
-    speed = min(speed, max_speed)
     vx = sgn(vx) * speed
     vy = sgn(vy) * speed
   end,
