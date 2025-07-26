@@ -37,9 +37,9 @@ function _init()
 	scene:load(splash_scene)
 
   -- find levels from first sprite page
-  levels = {}
+  levels = {{},{},{}} -- 3 groups; easy, medium, hard
   for id = 1, 63 do
-    local level
+    local done
     local sx = (id % 16) * 8
     local sy = (id \ 16) * 8
 
@@ -47,12 +47,13 @@ function _init()
       for y = sy, sy + 7 do
         local pixel_color = sget(x, y)
         if pixel_color != 0 then
-          add(levels, id)
+          add(levels[1 + (id \ 16)], id)
+          done = true
           break
         end
       end
 
-      if (level) break
+      if (done) break
     end
   end
 end

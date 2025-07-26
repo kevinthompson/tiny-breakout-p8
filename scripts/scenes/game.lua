@@ -1,18 +1,32 @@
 game_scene = scene:extend({
   init = function(_ENV)
     entity:destroy_all()
-    _ENV:load_level(rnd(levels))
+
+    difficulty = 1
     lives = 3
+    _ENV:load_level(rnd(levels[difficulty]))
 
-    -- reset ball speed
-    ball.speed = ball.min_speed
+    -- create walls
+    wall({ x = -1, y = 0, width = 1, height = 64 })
+    wall({ x = 64, y = 0, width = 1, height = 64 })
 
-    -- change ball speed after brick destroy
-    local max_bricks = #brick.objects
-    brick.after_destroy = function(_ENV)
-      local percent = (max_bricks - #brick.objects) / max_bricks
-      ball.speed = ball.min_speed + (ball.max_speed - ball.min_speed) * percent
-    end
+    -- create ceiling
+    wall({
+      x = 0,
+      y = -1,
+      width = 64,
+      height = 1,
+      on_hit = function()
+        -- reduce paddle size when hitting ceiling
+        local paddle_size = max(player.width - 2, 8)
+
+        if paddle_size < player.width then
+          player.width = paddle_size
+          player.x += 1
+          sfx(3)
+        end
+      end
+    })
   end,
 
   update = function(_ENV)
@@ -37,8 +51,19 @@ game_scene = scene:extend({
     end
 
     -- load level when lives run out
-    if lives <= 0 or #brick.objects == 0 then
+    if lives <= 0 then
+      -- todo: game over scene
       _ENV:init()
+    end
+
+    -- all bricks cleared
+    if #brick.objects == 0 then
+      if difficulty < 3 then
+        difficulty += 1
+        _ENV:load_level(rnd(levels[difficulty]))
+      else
+        -- todo win scene
+      end
     end
   end,
 
@@ -78,26 +103,14 @@ game_scene = scene:extend({
     -- create player
     player = paddle()
 
-    -- create walls
-    wall({ x = -1, y = 0, width = 1, height = 64 })
-    wall({ x = 64, y = 0, width = 1, height = 64 })
+    -- reset ball speed
+    ball.speed = ball.min_speed
 
-    -- create ceiling
-    wall({
-      x = 0,
-      y = -1,
-      width = 64,
-      height = 1,
-      on_hit = function()
-        -- reduce paddle size when hitting ceiling
-        local paddle_size = max(player.width - 2, 8)
-
-        if paddle_size < player.width then
-          player.width = paddle_size
-          player.x += 1
-          sfx(3)
-        end
-      end
-    })
+    -- change ball speed after brick destroy
+    local max_bricks = #brick.objects
+    brick.after_destroy = function(_ENV)
+      local percent = (max_bricks - #brick.objects) / max_bricks
+      ball.speed = ball.min_speed + (ball.max_speed - ball.min_speed) * percent
+    end
   end
 })
