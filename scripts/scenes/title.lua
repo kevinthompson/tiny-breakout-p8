@@ -1,5 +1,6 @@
 title_scene = scene:extend({
   init = function(_ENV)
+    global.level = 1
   end,
 
   update = function(_ENV)

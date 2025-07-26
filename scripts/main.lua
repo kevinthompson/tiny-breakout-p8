@@ -7,6 +7,7 @@ cartdata("tiny_breakout")
 
 -- setup global references
 global = _ENV
+global.level = 1
 _noop = function()end
 _after_draw = _noop
 
