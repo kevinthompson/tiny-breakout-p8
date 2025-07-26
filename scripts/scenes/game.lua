@@ -1,6 +1,5 @@
 game_scene = scene:extend({
   init = function(_ENV)
-    pal(split("1,2,139,4,129,6,7,136,9,135,138,12,140,14,15,0"), 1)
     entity:destroy_all()
     _ENV:load_level(global.level)
 
