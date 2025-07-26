@@ -8,8 +8,6 @@ cartdata("tiny_breakout")
 -- setup global references
 global = _ENV
 global.level = 1
-_noop = function()end
-_after_draw = _noop
 
 -- configure fade transition
 custom_transition_table = [[
@@ -31,6 +29,9 @@ custom_transition_table = [[
   15,143,143,134,134,134,134,5,5,5,133,133,128,128,0
 ]]
 
+-- change default gravity scale
+entity.gravity_scale = 0
+
 -- initialize cartridge
 function _init()
 	scene:load(splash_scene)
@@ -46,5 +47,4 @@ end
 -- draw current scene
 function _draw()
   scene.current:draw()
-  _after_draw()
 end

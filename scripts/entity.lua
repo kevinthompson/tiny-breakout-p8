@@ -30,7 +30,7 @@ entity = game_object:extend({
   vy = 0,
   speed = 1,
 
-  gravity_scale = 0,
+  gravity_scale = 1,
 
   -- collision
   collision = {},
@@ -46,10 +46,6 @@ entity = game_object:extend({
   animations = {
     idle = {0}
   },
-
-  -- state
-  state = "default",
-  states = {},
 
   -- events
   on_collide = _noop,
@@ -235,12 +231,13 @@ entity = game_object:extend({
     _ENV:before_hit()
 
     if health then
-      _ENV:flash()
       amount = amount or 1
       health -= amount
 
       if health <= 0 then
         _ENV:destroy()
+      else
+        _ENV:flash()
       end
     end
 
