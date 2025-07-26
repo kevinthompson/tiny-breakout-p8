@@ -2,8 +2,8 @@ ball = rectangle:extend({
   width = 2,
   height = 2,
   speed = 0.25,
-  min_speed = 0.25,
-  max_speed = 1,
+  min_speed = 0.2,
+  max_speed = 0.8,
 
   collides_with = {
     paddle,
