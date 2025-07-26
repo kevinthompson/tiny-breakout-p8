@@ -1,5 +1,5 @@
 entity = game_object:extend({
-  gravity = 0,
+  gravity = 0.2,
   objects = {},
 
   update_all = function(_ENV, callback)
@@ -30,7 +30,7 @@ entity = game_object:extend({
   vy = 0,
   speed = 1,
 
-  gravity_scale = 1,
+  gravity_scale = 0,
 
   -- collision
   collision = {},
@@ -38,7 +38,6 @@ entity = game_object:extend({
 
   -- drawing
   flip = false,
-  sprite = 0,
   sx = 0,
   sy = 0,
 
@@ -236,14 +235,13 @@ entity = game_object:extend({
     _ENV:before_hit()
 
     if health then
+      _ENV:flash()
       amount = amount or 1
       health -= amount
-    end
 
-    _ENV:flash()
-
-    if (not health or health <= 0) then
-      _ENV:destroy()
+      if health <= 0 then
+        _ENV:destroy()
+      end
     end
 
     _ENV:after_hit()

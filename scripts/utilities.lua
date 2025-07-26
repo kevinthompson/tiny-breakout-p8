@@ -39,3 +39,8 @@ function sort(tbl,key,lo,hi)
     sort(tbl,key,j+1,hi)
   end
 end
+
+-- rounding
+function round(i)
+  return (i % 1 >= 0.5 and ceil or flr)(i)
+end

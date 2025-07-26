@@ -32,9 +32,7 @@ ball = rectangle:extend({
   end,
 
   on_collide = function(_ENV, other, axis)
-    if other:is(brick) then
-      other:hit()
-    end
+    other:hit()
 
     if other:is(paddle) then
       -- use angle to paddle
