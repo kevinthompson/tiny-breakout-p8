@@ -2,6 +2,7 @@ ball = entity:extend({
   width = 2,
   height = 2,
   speed = 0.25,
+  max_speed = 1,
 
   collides_with = {
     paddle,
@@ -12,6 +13,12 @@ ball = entity:extend({
   after_init = function(_ENV)
     vy = -speed
     vx = speed
+  end,
+
+  before_update = function(_ENV)
+    speed = min(speed, max_speed)
+    vx = sgn(vx) * speed
+    vy = sgn(vy) * speed
   end,
 
   draw = function(_ENV)

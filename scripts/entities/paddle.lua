@@ -1,7 +1,7 @@
 paddle = rectangle:extend({
   x = 24,
   y = 53,
-  speed = 0.3,
+  speed = 0.2,
 
   width = 16,
   height = 3,

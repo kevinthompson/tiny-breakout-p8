@@ -1,11 +1,20 @@
 game_scene = scene:extend({
   init = function(_ENV)
+    local brick_count = 30
+    local ball_speed_step = (ball.max_speed - ball.speed ) / brick_count
+
     player = paddle()
 
-    for i = 1, 30 do
+    for i = 1, brick_count do
       brick({
         x = 6 + ((i - 1) % 6) * 9,
-        y = 4 + ((i - 1) \ 6) * 5
+        y = 4 + ((i - 1) \ 6) * 5,
+
+        after_destroy = function(_ENV)
+          for obj in all(ball.objects) do
+            obj.speed += ball_speed_step
+          end
+        end
       })
     end
 
