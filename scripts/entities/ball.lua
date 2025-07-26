@@ -21,6 +21,12 @@ ball = entity:extend({
     vy = sgn(vy) * speed
   end,
 
+  after_update = function(_ENV)
+    if not aabb(_ENV, screen) then
+      _ENV:destroy()
+    end
+  end,
+
   draw = function(_ENV)
     rectfill(x, y, x + width - 1, y + height - 1, 7)
   end,
