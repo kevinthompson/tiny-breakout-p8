@@ -25,6 +25,7 @@ splash_scene = scene:extend({
 
   load_next_scene = function(_ENV)
     transition(function()
+      pal()
       scene:load(title_scene)
     end)
   end

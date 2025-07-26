@@ -11,5 +11,6 @@ title_scene = scene:extend({
 
   draw = function(_ENV)
     cls(12)
+    printc("breakout", 16)
   end
 })

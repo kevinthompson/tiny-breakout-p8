@@ -1,24 +1,14 @@
 entity = game_object:extend({
-  -- static
+  gravity = 0,
   objects = {},
 
   update_all = function(_ENV, callback)
-    visible = {}
-    local screen = { x = screen.x, y = screen.y, width = 128, height = 128 }
-
-    -- build table of visible entities
     for e in all(objects) do
-      if e.x < screen.x - e.width or e.y > screen.y + 128 then
-        e:destroy()
-      else
-        e.visible = aabb(e, screen)
-        if (e.visible) add(visible, e)
-        e:update()
-      end
+      e:update()
     end
 
-    -- sort visible entities
-    sort(visible, "sort")
+    -- sort entities
+    sort(objects, "sort")
   end,
 
   destroy_all = function(_ENV)
@@ -36,14 +26,15 @@ entity = game_object:extend({
   height = 8,
   layer = 1,
 
-  vx=0,
-  vy=0,
+  vx = 0,
+  vy = 0,
   speed = 1,
 
-  gravity = 1,
+  gravity_scale = 1,
 
   -- collision
   collision = {},
+  collides_with = {}, -- classes to collide with
 
   -- drawing
   flip = false,
@@ -99,7 +90,7 @@ entity = game_object:extend({
     game_object.update(_ENV)
 
     sort = layer * 1000 + y
-    vy += config.gravity * gravity
+    vy += gravity * gravity_scale
     collision = _ENV:move(x + vx, y + vy)
 
     _ENV:after_update()
@@ -154,7 +145,7 @@ entity = game_object:extend({
     if (nx < x) flip = true
 
     -- move without collision
-    if collision_mask == 0 then
+    if #collides_with == 0 then
       x = nx
       y = ny
       return {} -- no collision
@@ -182,13 +173,13 @@ entity = game_object:extend({
         local x2, y2 = x1 + width, y1 + height
 
         for e in all(entity.objects) do
-          if e != _ENV and e.collision_layers & collision_mask > 0 then
+          if e != _ENV and _ENV:collides_with_object(e) then
             if x1 < e.x + e.width and x2 > e.x and y1 < e.y + e.height and y2 > e.y then
-              _ENV:on_collide(e)
+              _ENV:on_collide(e, axis)
 
-              if e.collision_layers & config.collision.solid > 0
+              if e.solid
               or (
-                e.collision_layers & config.collision.semi_solid > 0
+                e.semi_solid
                 and axis == "y"
                 and vy > 0
                 and y + height - 1 < e.y
@@ -205,7 +196,6 @@ entity = game_object:extend({
           _ENV[axis] += step
         else
           _ENV[axis] = collision_object[axis] + (dir > 0 and -_ENV[size] or collision_object[size])
-          _ENV["v"..axis] = 0
         end
 
         -- assign collision result
@@ -228,6 +218,16 @@ entity = game_object:extend({
     local vy = sgn(ay) * min(abs(sin(a) * speed), abs(dy))
 
     return _ENV:move(x+vx, y+vy)
+  end,
+
+  collides_with_object = function(_ENV, obj)
+    for collision_class in all(collides_with) do
+      if obj:is(collision_class) then
+        return true
+      end
+    end
+
+    return false
   end,
 
   hit = function(_ENV, amount)

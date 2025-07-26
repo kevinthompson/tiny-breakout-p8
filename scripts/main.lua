@@ -12,13 +12,14 @@ _after_draw = _noop
 
 -- initialize cartridge
 function _init()
-	scene:load(splash_scene)
+	scene:load(game_scene)
 end
 
 -- update current scene
 function _update60()
   async:update()
   scene.current:update()
+  screen:update()
 end
 
 -- draw current scene
