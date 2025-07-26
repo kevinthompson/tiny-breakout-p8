@@ -34,19 +34,24 @@ ball = rectangle:extend({
   on_collide = function(_ENV, other, axis)
     other:hit()
 
+    -- reflect angle
+    if (axis == "y") vy *= -1
+    if (axis == "x") vx *= -1
+
+    -- use angle to paddle
     if other:is(paddle) then
-      -- use angle to paddle
-      local px = other.x + paddle.width / 2
-      local py = other.y + paddle.height / 2
+      local px = other.x + other.width / 2
+      local py = other.y + other.height / 2
       local bx = x + width / 2
       local by = y + height / 2
       local a = atan2(bx - px, by - py)
       vx = cos(a) * speed
       vy = sin(a) * speed
+      sfx(2)
+    elseif other:is(brick) then
+      sfx(1)
     else
-      -- reflect angle
-      if (axis == "y") vy *= -1
-      if (axis == "x") vx *= -1
+      sfx(0)
     end
   end
 })

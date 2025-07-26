@@ -72,13 +72,15 @@ game_scene = scene:extend({
       y = -1,
       width = 64,
       height = 1,
-      after_hit = function(_ENV)
+      on_hit = function(_ENV)
         -- reduce paddle size when hitting ceiling
         local paddle_size = max(player.width - 2, 8)
 
         if paddle_size < player.width then
           player.width = paddle_size
           player.x += 1
+          sfx(3)
+          screen:shake()
         end
       end
     })

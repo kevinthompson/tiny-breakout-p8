@@ -49,6 +49,7 @@ entity = game_object:extend({
 
   -- events
   on_collide = _noop,
+  on_hit = _noop,
 
   after_init = _noop,
   before_update = _noop,
@@ -57,8 +58,6 @@ entity = game_object:extend({
   after_destroy = _noop,
   before_draw = _noop,
   after_draw = _noop,
-  before_hit = _noop,
-  after_hit = _noop,
 
   extend = function(_ENV,tbl)
     tbl = class.extend(_ENV, tbl)
@@ -228,7 +227,7 @@ entity = game_object:extend({
   end,
 
   hit = function(_ENV, amount)
-    _ENV:before_hit()
+    _ENV:on_hit()
 
     if health then
       amount = amount or 1
@@ -240,8 +239,6 @@ entity = game_object:extend({
         _ENV:flash()
       end
     end
-
-    _ENV:after_hit()
   end,
 
   flash = function(_ENV, color)
