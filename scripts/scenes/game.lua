@@ -27,7 +27,7 @@ game_scene = scene:extend({
   end,
 
   draw = function(_ENV)
-    cls(12)
+    cls(5)
 
     for e in all(entity.objects) do
       e:draw()

@@ -12,7 +12,7 @@ _after_draw = _noop
 
 -- initialize cartridge
 function _init()
-	scene:load(game_scene)
+	scene:load(title_scene)
 end
 
 -- update current scene
