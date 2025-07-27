@@ -3,8 +3,8 @@ ball = entity:extend({
   width = 2,
   height = 2,
   speed = 0.25,
-  min_speed = 0.2,
-  max_speed = 0.8,
+  min_speed = 0.3,
+  max_speed = 0.9,
   active = false,
   sy = 3,
 
@@ -22,8 +22,9 @@ ball = entity:extend({
     if vx == 0 and vy == 0 then
       x = player.x + player.width / 2 - 1
     else
-      vx = sgn(vx) * speed
-      vy = sgn(vy) * speed
+      local a = atan2(vx, vy)
+      vx = cos(a) * speed
+      vy = sin(a) * speed
     end
   end,
 
@@ -36,13 +37,19 @@ ball = entity:extend({
 
     -- use angle to paddle
     if other:is(paddle) then
+      y = other.y - height
+
       local px = other.x + other.width / 2
       local py = other.y + other.height / 2
       local bx = x + width / 2
       local by = y + height / 2
       local a = atan2(bx - px, by - py)
+
+      -- restrict angle
+      a = mid(.125, a, .375)
       vx = cos(a) * speed
       vy = sin(a) * speed
+
       sfx(2)
     elseif other:is(brick) then
       sfx(1)
@@ -53,7 +60,7 @@ ball = entity:extend({
 
   launch = function(_ENV)
     vy = -speed
-    vx = speed
+    vx = (player.x + player.width / 2 >= 32 and speed or -speed)
     active = true
   end,
 

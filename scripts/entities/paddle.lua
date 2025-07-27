@@ -4,10 +4,12 @@ paddle = block:extend({
   y = 52,
   speed = 0.2,
 
-  width = 16,
+  max_width = 20,
+  min_width = 16,
+  width = 20,
   height = 3,
 
-  semi_solid = true,
+  solid = true,
 
   before_update = function(_ENV)
     vx *= 0.9
@@ -19,4 +21,17 @@ paddle = block:extend({
     x = mid(1, x, 63 - width)
     vx = mid(-1, vx, 1)
   end,
+
+  animate_width = function(_ENV, target_width)
+    async(function()
+      local prev_width = width
+
+      for i = 1, 15 do
+        local new_width = lerp(prev_width, target_width, ease_in(i / 15))
+        x += (width - new_width) / 2
+        width = new_width
+        yield()
+      end
+    end)
+  end
 })

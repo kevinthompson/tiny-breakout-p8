@@ -8,6 +8,13 @@ cartdata("tiny_breakout")
 -- setup global references
 global = _ENV
 
+-- config
+difficulty_settings = {
+  {0.2, 0.6, 16, 20}, -- ball min, ball max, paddle min, paddle max
+  {0.4, 0.8, 12, 16},
+  {0.6, 1.0, 8, 12}
+}
+
 -- configure fade transition
 custom_transition_table = [[
   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -72,4 +79,13 @@ end
 -- draw current scene
 function _draw()
   scene.current:draw()
+end
+
+function prompt(text)
+  if show_flashing then
+    local width = 7 + #text * 4
+    local x = 32 - width / 2
+    spr(71, x, 40)
+    print(text, x + 9, 41, 1)
+  end
 end

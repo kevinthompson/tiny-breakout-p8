@@ -189,10 +189,10 @@ entity = game_object:extend({
         end
 
         -- resolve collision
-        if not collision_object then
-          _ENV[axis] += step
-        else
+        if collision_object then
           _ENV[axis] = collision_object[axis] + (dir > 0 and -_ENV[size] or collision_object[size])
+        else
+          _ENV[axis] += step
         end
 
         -- assign collision result

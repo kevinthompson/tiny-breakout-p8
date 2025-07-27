@@ -4,9 +4,20 @@ brick = block:extend({
   height = 3,
   health = 1,
 
+  detonate = function(_ENV)
+    async(function()
+      while(#objects > 0) do
+        rnd(objects):destroy()
+        wait(2)
+        sfx(5)
+      end
+    end)
+  end,
+
   before_destroy = function(_ENV)
     local px = x + width / 2
     local py = y + height / 2
+    sfx(5)
 
     for i = 0, 2 do
       particle({

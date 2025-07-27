@@ -7,30 +7,31 @@ block = entity:extend({
 
   -- drawing offset
   delay = 0,
-  oy = 0,
 
   after_init = function(_ENV)
     secondary_color = color_map[primary_color]
 
-    if oy != 0 then
+    if sy != 0 then
       async(function()
-        local iy = oy
+        local iy = sy
         local frames = 15
 
         wait(delay)
 
         for i = 1, frames do
-          oy = lerp(iy, 0, 1 - ((i/frames) - 1)^2)
+          sy = lerp(iy, 0, ease_out(i/frames))
           yield()
         end
+
+        sfx(6)
       end)
     end
   end,
 
   draw_shape = function(_ENV)
     local x2 = x + width - 1
-    local y2 = oy + y + height - 1
-    rectfill(x, oy + y, x2, y2 - 1, primary_color)
+    local y2 = sy + y + height - 1
+    rectfill(x, sy + y, x2, y2 - 1, primary_color)
     line(x, y2, x2, y2, secondary_color)
   end
 })

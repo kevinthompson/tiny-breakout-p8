@@ -10,7 +10,7 @@ life = entity:extend({
       wait(delay)
 
       for i = 1,15 do
-        sy = lerp(3, 0, (i/15)^2)
+        sy = lerp(3, 0, ease_in(i/15))
         yield()
       end
     end)

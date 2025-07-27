@@ -4,7 +4,7 @@ game = scene:extend({
 
     -- life entities (for animation)
     for i = 0, 2 do
-      local l = life({
+      life({
         x = 1 + i * 3,
         y = 60,
         delay = i * 5
@@ -26,11 +26,8 @@ game = scene:extend({
       height = 1,
       on_hit = function()
         -- reduce paddle size when hitting ceiling
-        local paddle_size = max(player.width - 2, 8)
-
-        if paddle_size < player.width then
-          player.width = paddle_size
-          player.x += 1
+        if player.width == paddle.max_width then
+          player:animate_width(paddle.min_width)
           sfx(3)
         end
       end
@@ -73,7 +70,7 @@ game = scene:extend({
         current_ball:destroy()
         current_ball = nil
 
-        screen:shake(2, 3)
+        screen:shake(2, 5)
         sfx(4)
 
         if #life.objects > 0 then
@@ -96,10 +93,8 @@ game = scene:extend({
     -- draw prompt
     if not loading
     and current_ball
-    and not current_ball.active
-    and show_flashing then
-      spr(71, 20, 40)
-      print("play", 29, 41, 1)
+    and not current_ball.active then
+      prompt("play")
     end
   end,
 
@@ -115,7 +110,7 @@ game = scene:extend({
         current_ball = ball()
 
         for i = 1, frames do
-          current_life.sy = lerp(0, 3, (i / frames)^2)
+          current_life.sy = lerp(0, 3, ease_in(i / frames))
           yield()
         end
 
@@ -123,7 +118,7 @@ game = scene:extend({
       end
 
       for i = 1, frames do
-        current_ball.sy = lerp(3, 0,  1 - ((i/frames) - 1)^2)
+        current_ball.sy = lerp(3, 0, ease_out(i/frames))
         yield()
       end
 
@@ -133,6 +128,14 @@ game = scene:extend({
 
   load_next_level = function(_ENV)
     difficulty += 1
+
+    local settings = difficulty_settings[difficulty]
+    ball.min_speed = settings[1]
+    ball.max_speed = settings[2]
+    paddle.min_width = settings[3]
+    paddle.max_width = settings[4]
+    player:animate_width(paddle.max_width)
+
     _ENV:load_level(rnd(levels[difficulty]))
   end,
 
@@ -149,8 +152,8 @@ game = scene:extend({
           brick({
             x = 33 - (brick.width + 1) * 4 + (x - sx) * (brick.width + 1),
             y = 5 + (y - sy) * (brick.height + 1),
-            oy = -128,
-            delay = #brick.objects/2,
+            sy = -128,
+            delay = #brick.objects + rnd(5),
             primary_color = pixel_color
           })
         end
