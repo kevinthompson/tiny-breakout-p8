@@ -1,4 +1,5 @@
-paddle = rectangle:extend({
+paddle = block:extend({
+  layer = 4,
   x = 24,
   y = 52,
   speed = 0.2,
@@ -15,7 +16,7 @@ paddle = rectangle:extend({
   end,
 
   after_update = function(_ENV)
-    x = mid(2, x, 62 - width)
+    x = mid(1, x, 63 - width)
     vx = mid(-1, vx, 1)
   end,
 })

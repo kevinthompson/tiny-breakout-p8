@@ -1,10 +1,13 @@
 
 transition = class:extend({
   __call = function(_ENV, callback)
+    global.loading = true
     callback = callback or _noop
     transition:fade_out(function()
       callback()
-      transition:fade_in()
+      transition:fade_in(function()
+        global.loading = false
+      end)
     end)
   end,
 

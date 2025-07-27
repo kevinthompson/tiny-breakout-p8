@@ -1,4 +1,4 @@
-title_scene = scene:extend({
+title = scene:extend({
   init = function(_ENV)
     entity:each("destroy")
     logo_y = 6
@@ -9,7 +9,6 @@ title_scene = scene:extend({
       brick({ x = x, y = y, primary_color = i > 7 and 10 or 9 })
     end
 
-    global.lives = 3
     global.player = paddle({ x = 24, y = 56 })
   end,
 
@@ -18,9 +17,10 @@ title_scene = scene:extend({
     if not loading and btn(5) then
       loading = true
       async(function()
-        for b in all(brick.objects) do
-          b:destroy()
-          wait(2)
+        while(#brick.objects > 0) do
+          rnd(brick.objects):destroy()
+          wait(1)
+          sfx(3)
         end
       end)
 
@@ -30,7 +30,7 @@ title_scene = scene:extend({
           yield()
         end
 
-        scene:load(game_scene)
+        scene:load(game)
       end)
     end
   end,
@@ -46,19 +46,11 @@ title_scene = scene:extend({
     entity:each("draw")
 
     -- draw prompt
-    if not loading then
-      spr(71, 18, 39)
-      print("start", 27, 40, 1)
+    if not loading and show_flashing  then
+      spr(71, 18, 40)
+      print("start", 27, 41, 1)
     end
 
-    draw_lives()
     line(0, 63, 128, 63, 1)
   end
 })
-
-draw_lives = function()
-  for i = 1, global.lives do
-    local x = 4 + (i - 1) * 3
-    rectfill(x, 60, x + 1, 61 , 1)
-  end
-end

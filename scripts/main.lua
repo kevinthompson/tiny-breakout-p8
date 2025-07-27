@@ -7,7 +7,6 @@ cartdata("tiny_breakout")
 
 -- setup global references
 global = _ENV
-global.level = 1
 
 -- configure fade transition
 custom_transition_table = [[
@@ -34,7 +33,7 @@ entity.gravity_scale = 0
 
 -- initialize cartridge
 function _init()
-	scene:load(splash_scene)
+	scene:load(splash)
 
   -- find levels from first sprite page
   levels = {{},{},{}} -- 3 groups; easy, medium, hard
@@ -60,6 +59,8 @@ end
 
 -- update current scene
 function _update60()
+  show_flashing = flr(t() * 2) % 2 == 0
+
   entity:each("update")
   sort(entity.objects, "sort")
 

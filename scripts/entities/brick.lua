@@ -1,4 +1,4 @@
-brick = rectangle:extend({
+brick = block:extend({
   solid = true,
   width = 6,
   height = 3,

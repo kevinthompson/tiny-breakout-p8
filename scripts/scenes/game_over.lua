@@ -1,4 +1,4 @@
-game_over_scene = scene:extend({
+game_over = scene:extend({
   init = function(_ENV)
   end,
 

@@ -20,12 +20,13 @@ __lua__
 #include scripts/scenes/game.lua
 #include scripts/scenes/game_over.lua
 
-#include scripts/entities/rectangle.lua
+#include scripts/entities/block.lua
 #include scripts/entities/brick.lua
 #include scripts/entities/paddle.lua
 #include scripts/entities/wall.lua
 #include scripts/entities/ball.lua
 #include scripts/entities/particle.lua
+#include scripts/entities/life.lua
 
 #include scripts/main.lua
 

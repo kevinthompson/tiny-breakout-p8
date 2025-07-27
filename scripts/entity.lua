@@ -28,6 +28,7 @@ entity = game_object:extend({
   collides_with = {}, -- classes to collide with
 
   -- drawing
+  color = 7,
   flip = false,
   sx = 0,
   sy = 0,
@@ -85,10 +86,19 @@ entity = game_object:extend({
     if (flashing) pal(split"7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7")
 
     _ENV:before_draw()
-    if (sprite) spr(sprite, x + sx, y + sy, 1, 1, flip)
+    if sprite then
+      spr(sprite, x + sx, y + sy, 1, 1, flip)
+    else
+      _ENV:draw_shape()
+    end
+
     _ENV:after_draw()
 
     if (flashing) pal(split"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0")
+  end,
+
+  draw_shape = function(_ENV)
+    rectfill(x + sx, y + sy, x + sx + width - 1, y + sy + height - 1, _ENV.color)
   end,
 
   destroy = function(_ENV)

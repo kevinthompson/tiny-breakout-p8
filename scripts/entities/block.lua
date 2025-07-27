@@ -1,4 +1,4 @@
-rectangle = entity:extend({
+block = entity:extend({
   width = 8,
   height = 4,
 
@@ -15,19 +15,19 @@ rectangle = entity:extend({
     if oy != 0 then
       async(function()
         local iy = oy
-        local frames = 30
+        local frames = 15
 
         wait(delay)
 
         for i = 1, frames do
-          oy = lerp(iy, 0, 1-((i/frames) - 1)^2)
+          oy = lerp(iy, 0, 1 - ((i/frames) - 1)^2)
           yield()
         end
       end)
     end
   end,
 
-  before_draw = function(_ENV)
+  draw_shape = function(_ENV)
     local x2 = x + width - 1
     local y2 = oy + y + height - 1
     rectfill(x, oy + y, x2, y2 - 1, primary_color)

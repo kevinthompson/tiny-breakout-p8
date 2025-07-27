@@ -1,4 +1,4 @@
-splash_scene = scene:extend({
+splash = scene:extend({
   init = function(_ENV)
     transition.transition_table = [[
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -46,7 +46,7 @@ splash_scene = scene:extend({
     loading = true
     transition(function()
       transition.transition_table = custom_transition_table or transition.default_transition_table
-      scene:load(title_scene)
+      scene:load(title)
     end)
   end
 })

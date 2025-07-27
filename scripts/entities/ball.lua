@@ -1,9 +1,12 @@
 ball = entity:extend({
+  layer = 3,
   width = 2,
   height = 2,
   speed = 0.25,
   min_speed = 0.2,
   max_speed = 0.8,
+  active = false,
+  sy = 3,
 
   collides_with = {
     paddle,
@@ -12,17 +15,16 @@ ball = entity:extend({
   },
 
   after_init = function(_ENV)
-    vy = -speed
-    vx = speed
+    _ENV:reset()
   end,
 
   before_update = function(_ENV)
-    vx = sgn(vx) * speed
-    vy = sgn(vy) * speed
-  end,
-
-  draw = function(_ENV)
-    rectfill(x, y, x + width - 1, y + height - 1, 7)
+    if vx == 0 and vy == 0 then
+      x = player.x + player.width / 2 - 1
+    else
+      vx = sgn(vx) * speed
+      vy = sgn(vy) * speed
+    end
   end,
 
   on_collide = function(_ENV, other, axis)
@@ -47,5 +49,21 @@ ball = entity:extend({
     else
       sfx(0)
     end
+  end,
+
+  launch = function(_ENV)
+    vy = -speed
+    vx = speed
+    active = true
+  end,
+
+  reset = function(_ENV)
+    _ENV.color = 7
+    vx = 0
+    vy = 0
+    x = player.x + player.width \ 2 - 1
+    y = player.y - 3
+    sy = 3
+    active = false
   end
 })
