@@ -1,4 +1,4 @@
-ball = rectangle:extend({
+ball = entity:extend({
   width = 2,
   height = 2,
   speed = 0.25,

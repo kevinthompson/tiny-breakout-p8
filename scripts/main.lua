@@ -60,6 +60,9 @@ end
 
 -- update current scene
 function _update60()
+  entity:each("update")
+  sort(entity.objects, "sort")
+
   async:update()
   scene.current:update()
   screen:update()

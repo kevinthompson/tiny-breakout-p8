@@ -1,7 +1,5 @@
 game_scene = scene:extend({
   init = function(_ENV)
-    entity:destroy_all()
-
     difficulty = 1
     lives = 3
     _ENV:load_level(rnd(levels[difficulty]))
@@ -30,8 +28,6 @@ game_scene = scene:extend({
   end,
 
   update = function(_ENV)
-    entity:update_all()
-
     -- launch ball
     if #ball.objects == 0 and btnp(5) then
       ball({
@@ -58,6 +54,9 @@ game_scene = scene:extend({
 
     -- all bricks cleared
     if #brick.objects == 0 then
+      -- todo: level cleared
+      ball:each("destroy")
+
       if difficulty < 3 then
         difficulty += 1
         _ENV:load_level(rnd(levels[difficulty]))
@@ -70,38 +69,40 @@ game_scene = scene:extend({
   draw = function(_ENV)
     cls(5)
 
-    for e in all(entity.objects) do
-      e:draw()
+    entity:each("draw")
+
+    -- draw prompt
+    if not loading then
+      spr(71, 20, 39)
+      print("ball", 29, 40, 1)
     end
 
-    if #ball.objects == 0 then
-      printc("❎ to start", 46, 7)
-    end
-
-    ? "♥X" .. lives, 1, 57, 1
+    draw_lives()
+    line(0, 63, 128, 63, 1)
   end,
 
   load_level = function(_ENV, id)
     -- create bricks from sprite
     local sx = (id % 16) * 8
     local sy = (id \ 16) * 8
+    local i = 0
 
-    for x = sx, sx + 7 do
-      for y = sy, sy + 7 do
+    for y = sy, sy + 7 do
+      for x = sx, sx + 7 do
         local pixel_color = sget(x, y)
 
         if pixel_color != 0 then
           brick({
             x = 33 - (brick.width + 1) * 4 + (x - sx) * (brick.width + 1),
-            y = 4 + (y - sy) * (brick.height + 1),
+            y = 5 + (y - sy) * (brick.height + 1),
+            oy = -128,
+            delay = i,
             primary_color = pixel_color
           })
+          i += 1
         end
       end
     end
-
-    -- create player
-    player = paddle()
 
     -- reset ball speed
     ball.speed = ball.min_speed

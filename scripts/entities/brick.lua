@@ -1,7 +1,7 @@
 brick = rectangle:extend({
   solid = true,
   width = 6,
-  height = 4,
+  height = 3,
   health = 1,
 
   before_destroy = function(_ENV)

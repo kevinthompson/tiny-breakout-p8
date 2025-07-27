@@ -2,18 +2,9 @@ entity = game_object:extend({
   gravity = 0.2,
   objects = {},
 
-  update_all = function(_ENV, callback)
+  each = function(_ENV, func)
     for e in all(objects) do
-      e:update()
-    end
-
-    -- sort entities
-    sort(objects, "sort")
-  end,
-
-  destroy_all = function(_ENV)
-    for e in all(objects) do
-      e:destroy()
+      e[func](e)
     end
   end,
 
