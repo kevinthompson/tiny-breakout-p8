@@ -24,14 +24,7 @@ game = scene:extend({
       x = 0,
       y = -1,
       width = 64,
-      height = 1,
-      on_hit = function()
-        -- reduce paddle size when hitting ceiling
-        if player.width == paddle.max_width then
-          player:animate_width(paddle.min_width)
-          sfx(3)
-        end
-      end
+      height = 1
     })
   end,
 
