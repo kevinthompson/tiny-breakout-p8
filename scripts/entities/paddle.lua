@@ -4,9 +4,9 @@ paddle = block:extend({
   y = 52,
   speed = 0.2,
 
-  max_width = 20,
+  max_width = 16,
   min_width = 16,
-  width = 20,
+  width = 16,
   height = 3,
 
   solid = true,

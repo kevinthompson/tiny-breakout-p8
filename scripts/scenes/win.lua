@@ -42,7 +42,7 @@ win = scene:extend({
 
   draw = function(_ENV)
     game.draw(_ENV)
-    spr(144, 8, title_y, 6, 2)
+    spr(144, 11, title_y, 6, 2)
     prompt("again")
   end
 })

@@ -35,6 +35,8 @@ game = scene:extend({
     if #brick.objects == 0 then
       global.loading = true
 
+      sfx(11)
+
       async(function()
         -- fade ball out
         for c in all(split("6,12,13,1,5")) do
@@ -131,7 +133,12 @@ game = scene:extend({
     paddle.max_width = settings[4]
     player:animate_width(paddle.max_width)
 
-    _ENV:load_level(rnd(levels[difficulty]))
+    local text = level_text({
+      level = difficulty,
+      callback = function()
+        _ENV:load_level(rnd(levels[difficulty]))
+      end
+    })
   end,
 
   load_level = function(_ENV, id)
