@@ -59,6 +59,7 @@ ball = entity:extend({
   end,
 
   launch = function(_ENV)
+    sfx(8)
     vy = -speed
     vx = (player.x + player.width / 2 >= 32 and speed or -speed)
     active = true

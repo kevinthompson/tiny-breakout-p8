@@ -10,22 +10,6 @@ block = entity:extend({
 
   after_init = function(_ENV)
     secondary_color = color_map[primary_color]
-
-    if sy != 0 then
-      async(function()
-        local iy = sy
-        local frames = 15
-
-        wait(delay)
-
-        for i = 1, frames do
-          sy = lerp(iy, 0, ease_out(i/frames))
-          yield()
-        end
-
-        sfx(6)
-      end)
-    end
   end,
 
   draw_shape = function(_ENV)

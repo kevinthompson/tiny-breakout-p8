@@ -10,7 +10,7 @@ global = _ENV
 
 -- config
 difficulty_settings = {
-  {0.2, 0.6, 16, 20}, -- ball min, ball max, paddle min, paddle max
+  {0.4, 0.6, 16, 20}, -- ball min, ball max, paddle min, paddle max
   {0.4, 0.8, 12, 16},
   {0.6, 1.0, 8, 12}
 }

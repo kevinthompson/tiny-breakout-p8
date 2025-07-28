@@ -6,16 +6,21 @@ title = scene:extend({
     for i = 1, 14 do
       local x = 8 + ((i - 1) % 7) * 7
       local y = 25 + ((i - 1) \ 7) * 4
-      brick({ x = x, y = y, primary_color = 8 + rnd(7)\1 })
+      brick({ x = x, y = y, primary_color = 8 + rnd(3)\1 })
     end
 
     global.player = paddle({ x = 24, y = 56 })
+
+    async(function()
+      wait(15)
+      sfx(11)
+    end)
   end,
 
   update = function(_ENV)
     -- load game if any button pressed
     if not loading and btn(5) then
-      loading = true
+      global.loading = true
       brick:detonate()
 
       async(function()

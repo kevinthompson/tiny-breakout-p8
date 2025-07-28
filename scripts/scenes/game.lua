@@ -13,6 +13,7 @@ game = scene:extend({
 
     -- load level
     _ENV:load_next_level()
+    sfx(7)
 
     -- create walls
     wall({ x = -1, y = 0, width = 1, height = 64 })
@@ -55,7 +56,8 @@ game = scene:extend({
         if difficulty < 3 then
           _ENV:load_next_level()
         else
-          -- todo win scene
+          current_ball = nil
+          scene:load(win)
         end
       end)
     elseif current_ball then
@@ -149,20 +151,35 @@ game = scene:extend({
         local pixel_color = sget(x, y)
 
         if pixel_color != 0 then
-          brick({
+          local new_brick = brick({
             x = 33 - (brick.width + 1) * 4 + (x - sx) * (brick.width + 1),
             y = 5 + (y - sy) * (brick.height + 1),
             sy = -128,
-            delay = #brick.objects + rnd(5),
             primary_color = pixel_color
           })
+
+          local brick_count = #brick.objects
+
+          async(function()
+            local iy = -128
+            local frames = 15
+
+            wait(brick_count + rnd(5))
+
+            for i = 1, frames do
+              new_brick.sy = lerp(iy, 0, ease_out(i/frames))
+              yield()
+            end
+
+            sfx(6)
+          end)
         end
       end
     end
 
     -- delay on loading based on brick count
     async(function()
-      wait(15 + #brick.objects / 2)
+      wait(30 + #brick.objects)
       _ENV:load_ball()
     end)
 
