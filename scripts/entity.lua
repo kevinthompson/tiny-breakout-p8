@@ -11,11 +11,10 @@ entity = game_object:extend({
   --------------------
 
   -- position
-  x=0,
-  y=0,
+  x = 0,
+  y = 0,
   width = 8,
   height = 8,
-  layer = 1,
 
   vx = 0,
   vy = 0,
@@ -28,6 +27,7 @@ entity = game_object:extend({
   collides_with = {}, -- classes to collide with
 
   -- drawing
+  layer = 1,
   color = 7,
   flip = false,
   sx = 0,
